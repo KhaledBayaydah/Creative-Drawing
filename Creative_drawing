@@ -1,0 +1,130 @@
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
+import java.awt.Dimension;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseEvent;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Polygon;
+
+public class DrawingApp {
+    private JFrame frame;
+
+    public DrawingApp() {
+        frame = new JFrame("Mine Sweeper");
+        frame.setSize(1000, 700);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setPreferredSize(frame.getSize());
+        frame.add(new DrawFace(frame.getSize()));
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    public static void main(String... argv) {
+        new DrawingApp();
+    }
+
+    public static class DrawFace extends JPanel  implements MouseListener {
+        /*
+         * Declare Class Variables Here
+         */
+        //variables to locate the four verticies of the polygon and to help filling it
+        int x_poly[] = { 275, 725, 650, 350}; 
+        int y_poly[] = { 350, 350, 200, 200}; 
+        int numberofpoints = 4; 
+  
+        //variables to locate the wheels
+        int x = 300;
+        int y = 420;
+         
+        public DrawFace(Dimension dimension) {
+            setSize(dimension);
+            setPreferredSize(dimension);
+            addMouseListener(this);
+
+        }
+
+        @Override
+        public void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D)g;//g2 is the graphics object that we need to use
+            //to draw things to the screen
+            Dimension d = getSize();
+            
+            //create a background
+            g2.setColor(Color.white);
+            g2.fillRect(0, 0, d.width, d.height);
+            
+            //A polygon and arectangle to fill the body of the car
+            g2.setColor(Color.red); 
+            g2.fillPolygon(x_poly, y_poly, numberofpoints); 
+            g2.fillRect(200, 350, 600, 125);
+            
+            //windows
+            Color sky = new Color(66, 236, 245);
+            g2.setColor(sky);
+            g2.fillRect(365, 207, 125, 135 ); 
+            g2.fillRect(515, 207, 125, 135);
+            
+            //to empty the wheels place when mouse is pressed
+            g2.setColor(Color.white);
+            g2.fillOval(300, 420, 125, 125);
+            g2.fillOval(575, 420, 125, 125);
+            
+            //wheels
+            g2.setColor(Color.black);
+            g2.fillOval(x, y, 125, 125);
+            g2.fillOval(x+275, y, 125, 125);
+            Color gold = new Color(245, 215,66);
+            
+            //inner body of the wheels
+            g2.setColor(gold);
+            g2.fillOval(x+25, y+25, 75, 75);
+            g2.fillOval(x+300, y+25, 75,75);
+            
+            //a part of the wheels
+            g2.setColor(Color.black);
+            g2.fillRect(x, y+62, 125, 3);
+            g2.fillRect(x+275, y+62, 125, 3);
+            g2.fillRect(x+62, y, 3, 125);
+            g2.fillRect(x+337, y, 3, 125);
+            
+            //border between the car parts
+            g2.fillRect(275, 350, 450, 3);
+            g2.fillRect(350, 200, 3,150);
+            g2.fillRect(650, 200, 3,150);
+            g2.fillRect(500, 207, 3, 135);
+          
+            //display Text
+             g2.setColor(Color.green);
+            g2.setFont (new Font("TimesRoman", Font.PLAIN, 20));
+            g2.drawString("A Car Falling Apart" ,  100,100);//text to display, x and y coordinates
+
+        }
+
+        
+        public void mousePressed(MouseEvent e) {
+            x=333333;//to take the weels off the car
+            y=333333;
+            repaint();//updates the paint method
+        }
+
+
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        public void mouseExited(MouseEvent e) {
+        }
+//DO NOT USE THE METHOD BELOW
+       public void mouseClicked(MouseEvent e) {
+        
+        }
+    }
+}
